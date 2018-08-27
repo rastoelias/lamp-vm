@@ -11,9 +11,6 @@ vhosts:
   - servername: "example.vm"
     documentroot: "/var/www/example.vm/public"
     dbname: "example_vm"
-  - servername: "example2.vm"
-    documentroot: "/var/www/example2.vm/public"
-    dbname: "example2_vm"
 
 # Mysql config
 mysql_rootpassword: root
