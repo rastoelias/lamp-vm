@@ -1,0 +1,11 @@
+---
+- hosts: all
+  sudo: true
+  vars_files:
+    - ../config.yml
+  pre_tasks:
+    - name: update apt cache
+      apt: update_cache=yes
+  roles:
+    - webserver
+    - database

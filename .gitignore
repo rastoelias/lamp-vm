@@ -1,0 +1,20 @@
+# OS-specific
+.DS_Store
+
+# Config file
+/config.yml
+
+# Log files
+/*.log
+
+# Vagrant stuff
+/.vagrant
+
+# www
+!/www
+/www/*
+!/www/vm
+!/www/example.vm
+
+# Other
+playbook.retry

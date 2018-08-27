@@ -1,0 +1,30 @@
+---
+
+# Virtual hosts.
+vhosts:
+  # do not change
+  - servername: "vm"
+    documentroot: "/var/www/vm/public"
+  - servername: "adminer.vm"
+    documentroot: "/var/www/adminer.vm/public"
+    # add your projects below
+  - servername: "example.vm"
+    documentroot: "/var/www/example.vm/public"
+    dbname: "example_vm"
+  - servername: "example2.vm"
+    documentroot: "/var/www/example2.vm/public"
+    dbname: "example2_vm"
+
+# Mysql config
+mysql_rootpassword: root
+
+# Vagrant hostname stuffs.
+vagrant_hostname: vm
+vagrant_machine_name: vm
+vagrant_ip: 192.168.42.42
+
+# VirtualBox
+vb_machine_name: vbvm
+
+# Vagrant Box
+vagrant_box: "ubuntu/xenial64"

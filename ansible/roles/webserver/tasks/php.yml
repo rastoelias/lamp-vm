@@ -1,0 +1,19 @@
+---
+- name: Install PHP
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - php
+    - libapache2-mod-php
+    - php-mysql
+  notify:
+    - reload apache
+- name: display php errors
+  ini_file:
+    dest: /etc/php/7.0/apache2/php.ini
+    section: PHP
+    option: display_errors
+    value: On
+  notify:
+    - reload apache

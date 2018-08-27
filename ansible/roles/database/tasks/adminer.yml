@@ -1,0 +1,21 @@
+---
+- name: create adminer download directory
+  file:
+    path: /var/www/adminer.vm/public
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+    force: no
+    recurse: yes
+  creates: /var/www/adminer.vm/public
+- name: download adminer (latest)
+  get_url:
+    url: https://www.adminer.org/latest.php
+    dest: /var/www/adminer.vm/public/index.php
+    owner: root
+    group: root
+    mode: 0644
+    force: no
+    timeout: 60
+  creates: /var/www/adminer.vm/index.php

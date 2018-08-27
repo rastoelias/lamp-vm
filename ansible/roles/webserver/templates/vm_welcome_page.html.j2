@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LAMP VM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        /* Common */
+        *,
+        *::before,
+        *::after { 
+            box-sizing: border-box;
+        }
+        html,
+        body{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 0;
+            margin: 0;
+            background: #1563FF;
+            color: #FFF;
+            text-align: center;
+        }
+        h2{
+            margin-top: .5rem;
+            font-weight: 100;
+        }
+        a{
+            color: yellow;
+            text-decoration: none;
+        }
+        a:hover{
+            text-decoration: underline;
+        }
+        .container{
+            padding: 1rem;
+            max-width: 1400px;
+            margin: auto;
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        
+        /* Header */
+        header{
+            background: #1750dc;
+        }
+        header .container{
+            padding-bottom: 2rem;
+        }
+        .logo{
+            position: relative;
+            font-size: 4rem;
+            line-height: 4rem;
+            border: 2px solid yellow;
+            width: 5.1rem;
+            height: 5.1rem;
+            border-radius: 50%;
+            margin: 1.5rem auto 0 auto;
+        }
+        .logo:after{
+            position: absolute;
+            content: '\02112';
+            top: 0.3rem;
+            left: 0.9rem;
+            color: yellow;
+        }
+        header h1{
+            font-size: 1.5rem;
+            margin: .8rem 0 0 0;
+        }
+        header p{
+            margin: 0;
+            padding-top: .5rem;
+            font-size: .8rem;
+        }
+
+        /* Main */
+        main .container{
+            padding-top: 2rem;
+        }
+        .cards{
+            margin: 0 -1rem 0 -1rem;
+            padding: 0 0 2rem 0;
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+        }
+        .card{
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 1rem 0 1rem;
+        }
+        .card .wrapper{
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: dodgerblue;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        .card .header,
+        .card .body{
+            display: flex;
+            flex-direction: column;
+        }
+        .card h3{
+            margin-top: 2rem;
+            word-wrap: break-word;
+        }
+        .card .body{
+            font-size: 0.9rem;
+        }
+        .card p{
+            margin-top: .5rem;
+            margin-bottom: .5rem;
+            word-wrap: break-word;
+        }
+        .card p:last-child{
+            padding-bottom: 2rem;
+        }
+        .mysql-details .card .wrapper,
+        .tools .card .wrapper{
+            padding-top: 2rem;
+        }
+
+        /* Footer */
+        footer{
+            background: #1750dc;
+            font-size: .9rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* Media query */
+        @media (min-width: 576px){
+
+            /* Common */
+            .container{
+                padding: 2rem;
+            }
+
+            /* Header */
+            header{
+                text-align: left;
+            }
+            .logo{
+                margin: 0;
+                float: left;
+            }
+            header .wrapper{
+                display: inline-block;
+                padding-left: 1rem;
+            }
+
+            /* Main */
+            main h2{
+                text-align: left;
+            }
+            .cards{
+                flex-wrap: wrap;
+                flex-direction: inherit;
+                margin-left: 0;
+            }
+            .card{
+                width: 50%;
+                padding-left: 0;
+            }
+            .card .wrapper{
+                flex-grow: 1;
+            }
+        }
+        @media (min-width: 768px){
+            .card{
+                width: 33.333%;
+            }
+        }
+        @media (min-width: 992px){
+            .card{
+                width: 25%;
+            }
+        }
+        @media (min-width: 1200px){
+            .card{
+                width: 20%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container clearfix">
+            <div class="logo"></div>
+            <div class="wrapper">
+                <h1>LAMP VM</h1>
+                <p>Simple LAMP stack, build with <a href="https://www.vagrantup.com" target="_blank">Vagrant</a>
+                and <a href="https://www.ansible.com" target="_blank">Ansible</a>.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main>
+        <div class="container">
+
+            <!-- Projects -->
+            <div class="section projects">
+                <h2>Projects</h2>
+
+                <div class="cards">
+                    {% for vhost in vhosts %}
+                        {% if vhost.servername != 'vm' and vhost.servername != 'adminer.vm' %}
+                            <div class="card">
+                                <div class="wrapper">
+                                    <div class="header">
+                                        <h3>
+                                            <a href="http://{{ vhost.servername|e }}" target="_blank">
+                                                {{ vhost.servername|e }}
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    <div class="body">
+                                        <p>
+                                            <strong>Guest document root</strong><br />
+                                            {{ vhost.documentroot|e }}
+                                        </p>
+                                        {% if vhost.dbname is defined %}
+                                            <p>
+                                                <strong>Database</strong><br />
+                                                <a href="http://adminer.vm/?username=root&db={{ vhost.dbname|e }}" target="_blank" title="Open Adminer">
+                                                    {{ vhost.dbname|e }}
+                                                </a>
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <!-- Mysql details -->
+            <div class="section mysql-details">
+                <h2>MySQL details</h2>
+                <ul class="cards">
+                    <li class="card">
+                        <div class="wrapper">
+                            <div class="body">
+                                <p><strong>host:</strong> localhost</p>
+                                <p><strong>username:</strong> root</p>
+                                <p><strong>password:</strong> {{ mysql_rootpassword|e }}</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tools -->
+            <div class="section tools">
+                <h2>Tools</h2>
+                <ul class="cards">
+                    <li class="card">
+                        <div class="wrapper">
+                            <div class="body">
+                                <p><a href="http://adminer.vm">Adminer</a></p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <a href="https://github.com/rastoelias/lamp-vm" target="_blank">Project page</a> |
+            Author: <a href="https://github.com/rastoelias" target="_blank">Rastislav Elias</a> |
+            MIT License |
+            <a href="/phpinfo.php" target="_blank">phpinfo()</a>
+
+        </div>
+    </footer>
+</body>
+</html>

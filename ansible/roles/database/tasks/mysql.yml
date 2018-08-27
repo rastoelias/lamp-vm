@@ -1,0 +1,47 @@
+---
+- name: Specify MySQL root password before installing
+  debconf:
+    name: mysql-server
+    question: mysql-server/root_password
+    value: "{{ mysql_rootpassword }}"
+    vtype: password
+  become: true
+- name: Confirm MySQL root password before installing
+  debconf:
+    name: mysql-server
+    question: mysql-server/root_password_again
+    value: "{{ mysql_rootpassword }}"
+    vtype: password
+  become: true
+- name: Install MySQL
+  apt:
+    name: mysql-server
+    state: present
+- name: Install packages required for ansible mysql modules
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3-dev
+    - libmysqlclient-dev
+  notify:
+    - restart mysql
+- name: Install Python package manager
+  apt:
+    name: python3-pip
+    state: present
+  notify:
+    - restart mysql
+- name: Install the Python package for ansible MySQL modules
+  pip:
+    name: mysqlclient
+  notify:
+    - restart mysql
+- name: Create a databases
+  mysql_db:
+    name: "{{ item.dbname }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_rootpassword }}"
+  with_items: "{{ vhosts }}"
+  when: item.dbname is defined
