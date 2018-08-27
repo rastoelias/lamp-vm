@@ -13,7 +13,7 @@
 # www
 !/www
 /www/*
-!/www/vm
+!/www/vm/public/index.html
 !/www/example.vm
 
 # Other
